@@ -1,0 +1,60 @@
+name: CI Pipeline
+
+on:
+  pull_request:
+    branches:
+      - develop
+
+  push:
+    branches:
+      - develop
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:latest
+        env:
+          MYSQL_ROOT_PASSWORD: rootpassword
+          MYSQL_DATABASE: testdb
+          MYSQL_USER: exampleuser
+          MYSQL_PASSWORD: examplepassword
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd "mysqladmin ping -h localhost --silent"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      NODE_ENV: test
+      DATABASE_URL: mysql://exampleuser:examplepassword@localhost:3306/testdb
+      PORT: 3000
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Linting
+        run: npm run lint
+
+      - name: Run Unit Tests
+        run: npm run test
+
+#      - name: Run Integration Tests (Optional)
+#        run: npm run test:e2e
+
+      - name: Build Project
+        run: npm run build

@@ -8,24 +8,24 @@ services:
     environment:
     - PORT
     ports:
-      - "${PORT}:${PORT}"
+      - "3000:3000"
     volumes:
       - .:/app
     command: npm run start:dev
     depends_on:
-      - database
+      - mysql
 
-  database:
-    image: postgres:latest
-    container_name: postgres_db
+  mysql:
+    image: mysql:latest
+    container_name: mysql_db
+    restart: always
     environment:
-      - POSTGRES_USER=exampleuser
-      - POSTGRES_PASSWORD=examplepassword
-      - POSTGRES_DB=exampledb
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=test
     ports:
-      - "5432:5432"
+      - "3307:3306"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - mysql_data:/var/lib/mysql
 
 volumes:
-  postgres_data:
+  mysql_data:
