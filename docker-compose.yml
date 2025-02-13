@@ -1,0 +1,31 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+    - .env.development
+    environment:
+    - PORT
+    ports:
+      - "${PORT}:${PORT}"
+    volumes:
+      - .:/app
+    command: npm run start:dev
+    depends_on:
+      - database
+
+  database:
+    image: postgres:latest
+    container_name: postgres_db
+    environment:
+      - POSTGRES_USER=exampleuser
+      - POSTGRES_PASSWORD=examplepassword
+      - POSTGRES_DB=exampledb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
