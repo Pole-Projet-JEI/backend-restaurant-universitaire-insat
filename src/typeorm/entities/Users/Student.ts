@@ -1,5 +1,5 @@
 import { Entity, Column, OneToOne, OneToMany, JoinColumn } from 'typeorm';
-import { IsEnum, IsInt, IsString } from 'class-validator';
+import { IsEnum, IsInt } from 'class-validator';
 import { User } from './User';
 import { Order } from '../order';
 import { Wallet } from '../wallet';
