@@ -1,7 +1,7 @@
 import { Entity, Column, OneToOne, OneToMany, JoinColumn } from 'typeorm';
 import { IsInt, IsString } from 'class-validator';
 import { User } from './User';
-import { Command } from '../command';
+import { Order } from '../order';
 import { Wallet } from '../wallet';
 import { QrCode } from '../qrCode';
 
@@ -19,8 +19,8 @@ export class Student extends User {
   @IsInt()
   year: number;
 
-  @OneToMany(() => Command, (command) => command.student)
-  commands: Command[];
+  @OneToMany(() => Order, (order) => order.student)
+  orders: Order[];
 
   @OneToOne(() => Wallet)
   @JoinColumn()

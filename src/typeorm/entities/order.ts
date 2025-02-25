@@ -10,7 +10,7 @@ enum Status {
 }
 
 @Entity()
-export class Command extends TimeStamp {
+export class Order extends TimeStamp {
   @PrimaryGeneratedColumn()
   @IsInt()
   id: number;
@@ -23,6 +23,6 @@ export class Command extends TimeStamp {
   @IsEnum(Status)
   status: Status;
 
-  @ManyToOne(() => Student, (student) => student.commands)
+  @ManyToOne(() => Student, (student) => student.orders)
   student: Student;
 }
