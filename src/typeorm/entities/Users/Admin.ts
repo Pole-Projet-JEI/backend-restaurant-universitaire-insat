@@ -1,7 +1,7 @@
 // Admin.ts
 import { Entity, Column } from 'typeorm';
 import { IsString } from 'class-validator';
-import { User} from './User';
+import { User } from './User';
 
 @Entity()
 export class Admin extends User {

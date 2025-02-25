@@ -1,5 +1,6 @@
 import { IsInt } from 'class-validator';
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Ticket } from './ticket';
 
 @Entity()
 export class Wallet {
@@ -10,4 +11,7 @@ export class Wallet {
   @Column()
   @IsInt()
   ticketBalance: number;
+
+  @OneToMany(() => Ticket, (ticket) => ticket.wallet)
+  tickets: Ticket[];
 }
