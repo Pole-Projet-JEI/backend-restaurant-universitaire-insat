@@ -1,19 +1,29 @@
 import { Entity, Column, OneToOne, OneToMany, JoinColumn } from 'typeorm';
-import { IsInt, IsString } from 'class-validator';
+import { IsEnum, IsInt, IsString } from 'class-validator';
 import { User } from './User';
 import { Order } from '../order';
 import { Wallet } from '../wallet';
 import { QrCode } from '../qrCode';
 
+enum Major {
+  RT = 'RT',
+  GL = 'GL',
+  IIA = 'IIA',
+  IMI = 'IMI',
+  BIO = 'BIO',
+  CH = 'CH',
+  MPI = 'MPI',
+  CBA = 'CBA',
+}
 @Entity()
 export class Student extends User {
   @Column()
   @IsInt()
   registrationNumber: number;
 
-  @Column()
-  @IsString()
-  major: string;
+  @Column({ type: 'enum', enum: Major })
+  @IsEnum(Major)
+  major: Major;
 
   @Column()
   @IsInt()
