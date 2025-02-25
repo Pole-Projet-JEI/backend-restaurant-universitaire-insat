@@ -1,5 +1,5 @@
 // Admin.ts
-import { Entity, TableInheritance, Column } from 'typeorm';
+import { Entity, Column } from 'typeorm';
 import { IsString } from 'class-validator';
 import { User} from './User';
 
