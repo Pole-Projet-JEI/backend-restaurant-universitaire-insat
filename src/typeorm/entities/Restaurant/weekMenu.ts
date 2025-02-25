@@ -14,7 +14,7 @@ export class WeekMenu {
 
   @Column()
   @IsInt()
-  numberWeeks: number;
+  numberWeek: number;
 
   @OneToMany(() => DayMenu, (dayMenu) => dayMenu.weekMenu)
   daysMenues: DayMenu[];
