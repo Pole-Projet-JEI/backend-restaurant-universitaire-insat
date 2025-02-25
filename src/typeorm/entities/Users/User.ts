@@ -1,5 +1,6 @@
 import { PrimaryColumn, Column } from 'typeorm';
 import { IsInt, IsString, IsEmail, Length, IsEnum } from 'class-validator';
+import { TimeStamp } from '../timeStamp';
 
 export enum UserRole {
   STUDENT = 'student',
@@ -7,7 +8,7 @@ export enum UserRole {
   SUPERADMIN = 'superadmin',
 }
 
-export abstract class User {
+export abstract class User extends TimeStamp {
   @PrimaryColumn({ unique: true })
   @IsInt()
   nationalId: number;
