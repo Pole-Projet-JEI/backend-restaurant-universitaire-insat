@@ -1,6 +1,6 @@
 import { IsDate, IsInt, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
-import { DayMenuDto } from '../../daymenus/dtos/DayMenuDto';
+import { DayMenuDto } from '../../dayMenus/dtos/dayMenuDto';
 
 export class WeekMenuDto {
   @IsDate({ message: 'Invalid start date format.' })
