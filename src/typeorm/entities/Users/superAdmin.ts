@@ -1,6 +1,5 @@
-import { ChildEntity } from 'typeorm';
+import { Entity } from 'typeorm';
 import { Admin } from './Admin';
-import { UserRole } from './User';
 
-@ChildEntity(UserRole.SUPERADMIN)
+@Entity()
 export class SuperAdmin extends Admin {}

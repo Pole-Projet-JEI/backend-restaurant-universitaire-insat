@@ -1,6 +1,6 @@
 import { IsDate, IsInt } from 'class-validator';
 import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
-import { DayMenu } from './DayMenu';
+import { DayMenu } from './dayMenu';
 
 @Entity()
 export class WeekMenu {
