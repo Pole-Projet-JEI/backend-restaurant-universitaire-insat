@@ -1,7 +1,7 @@
-import { IsDate } from 'class-validator';
-import { Entity, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm';
-import { Dish } from './dish';
-import { WeekMenu } from './weekMenu';
+import { IsDate } from "class-validator";
+import { Entity, ManyToOne, OneToMany, PrimaryColumn } from "typeorm";
+import { Dish } from "./dish.entity";
+import { WeekMenu } from "./weekMenu.entity";
 
 @Entity()
 export class DayMenu {
