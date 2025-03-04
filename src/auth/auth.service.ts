@@ -101,14 +101,29 @@ export class AuthService {
 
     return { accessToken, refreshToken };
   }
-  async storeRefreshToken(token: string, studentNationalId) {
-    //calculating expiryDate
+  async storeRefreshToken(token: string, studentNationalId: string) {
+    // Calculate expiry date (10 days from now)
     const expiresAt = new Date();
     expiresAt.setDate(expiresAt.getDate() + 10);
-    await this.refreshTokenRepo.save({
-      token,
-      userNationalId: studentNationalId,
-      expiresAt,
+
+    // Check if there's already a refresh token for this user
+    let existingToken = await this.refreshTokenRepo.findOne({
+        where: { userNationalId: studentNationalId },
     });
-  }
+
+    if (existingToken) {
+        // Update existing token
+        existingToken.refreshToken = token;
+        existingToken.expiresAt = expiresAt;
+        await this.refreshTokenRepo.save(existingToken);
+    } else {
+        // Create new token
+        const newToken = this.refreshTokenRepo.create({
+            userNationalId: studentNationalId,
+            refreshToken: token,
+            expiresAt,
+        });
+        await this.refreshTokenRepo.save(newToken);
+    }
 }
+
