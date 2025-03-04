@@ -1,7 +1,6 @@
 import { IsInt, IsString } from 'class-validator';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { DayMenu } from './dayMenu';
-
 @Entity()
 export class Dish {
   @PrimaryGeneratedColumn()
