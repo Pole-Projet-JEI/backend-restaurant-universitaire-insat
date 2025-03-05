@@ -6,6 +6,8 @@ import { AppService } from "./app.service";
 import { entities } from "./typeorm/exportEntities";
 import { AuthModule } from "./auth/auth.module";
 import { JwtModule } from "@nestjs/jwt";
+import { RolesGuard } from "./guards/roles.guard";
+import { JwtAuthGuard } from "./guards/jwt-auth.guard";
 
 @Module({
   imports: [
@@ -34,13 +36,17 @@ import { JwtModule } from "@nestjs/jwt";
         username: configService.get<string>("DB_USERNAME"),
         password: configService.get<string>("DB_PASSWORD"),
         database: configService.get<string>("DB_NAME"),
-        entities,
+        "entities": ["dist/**/*.entity{.ts,.js}"],
+        "migrations": ["dist/migrations/*{.ts,.js}"],
+        "cli": {
+          "migrationsDir": "src/migrations"
+        } ,
         synchronize: true,
       }),
     }),
     AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, RolesGuard, JwtAuthGuard],
 })
 export class AppModule {}

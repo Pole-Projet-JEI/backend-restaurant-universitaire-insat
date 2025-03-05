@@ -1,8 +1,8 @@
 import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Student } from "src/typeorm/entities/Users/Student.entity";
-import { Wallet } from "../typeorm/entities/wallet.entity";
-import { QrCode } from "../typeorm/entities/qrCode.entity";
+import { Wallet } from "src/typeorm/entities/wallet.entity";
+import { QrCode } from "src/typeorm/entities/qrCode.entity";
 import { CreateStudentDto } from "./dtos/student.dto";
 import { MoreThanOrEqual, Repository } from "typeorm";
 import * as bcrypt from "bcrypt";
@@ -10,6 +10,7 @@ import { LoginStudentDto } from "./dtos/student-login.dto";
 import { JwtService } from "@nestjs/jwt";
 import { RefreshToken } from "src/typeorm/entities/RefreshToken/refreshToken.entity";
 import { v4 as uuidv4 } from "uuid";
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -20,6 +21,7 @@ export class AuthService {
     private refreshTokenRepo: Repository<RefreshToken>,
     private jwtService: JwtService
   ) {}
+
   async createStudent(dto: CreateStudentDto) {
     const hashedPassword = await bcrypt.hash(dto.password, 10);
 
@@ -41,17 +43,21 @@ export class AuthService {
 
     await this.studentRepo.save(student);
   }
+
   async login(credentials: LoginStudentDto) {
     const { email, password } = credentials;
-    //Find if student exists by email
+    
+    // Find student by email
     const student = await this.studentRepo.findOne({ where: { email } });
     if (!student) {
-      throw new UnauthorizedException("Wring credentials");
+      throw new UnauthorizedException("Wrong credentials");
     }
+
     const passwordMatch = await bcrypt.compare(password, student.passwordHash);
     if (!passwordMatch) {
       throw new UnauthorizedException("Wrong credentials");
     }
+
     return this.generateStudentTokens(
       student.nationalId,
       student.email,
@@ -66,17 +72,19 @@ export class AuthService {
         expiresAt: MoreThanOrEqual(new Date()),
       },
     });
+
     if (!token) {
-      throw new UnauthorizedException("refresh token is invalid");
+      throw new UnauthorizedException("Refresh token is invalid");
     }
-    
-    //because a user(student) is only authorized to have one refresh token
+
+    // Remove old refresh token (each user has only one active token)
     await this.refreshTokenRepo.remove(token);
 
-    // Query the student using userNationalId from the refresh token
+    // Find student by national ID
     const student = await this.studentRepo.findOne({
       where: { nationalId: token.userNationalId },
     });
+
     if (!student) {
       throw new UnauthorizedException("Student not found");
     }
@@ -90,8 +98,8 @@ export class AuthService {
 
   async generateStudentTokens(studentNationalId, studentEmail, studentRole) {
     const payload = {
-      studentNationalId,
-      studentEmail,
+      sub: studentNationalId,  // Standard JWT field for subject
+      email: studentEmail,
       role: studentRole,
     };
 
@@ -101,29 +109,30 @@ export class AuthService {
 
     return { accessToken, refreshToken };
   }
-  async storeRefreshToken(token: string, studentNationalId: string) {
-    // Calculate expiry date (10 days from now)
+
+  async storeRefreshToken(token: string, studentNationalId: number) {
+    // Expiry date (10 days from now)
     const expiresAt = new Date();
     expiresAt.setDate(expiresAt.getDate() + 10);
 
-    // Check if there's already a refresh token for this user
+    // Check if a refresh token exists for this user
     let existingToken = await this.refreshTokenRepo.findOne({
-        where: { userNationalId: studentNationalId },
+      where: { userNationalId: studentNationalId },
     });
 
     if (existingToken) {
-        // Update existing token
-        existingToken.refreshToken = token;
-        existingToken.expiresAt = expiresAt;
-        await this.refreshTokenRepo.save(existingToken);
+      // Update existing token
+      existingToken.refreshToken = token;
+      existingToken.expiresAt = expiresAt;
+      await this.refreshTokenRepo.save(existingToken);
     } else {
-        // Create new token
-        const newToken = this.refreshTokenRepo.create({
-            userNationalId: studentNationalId,
-            refreshToken: token,
-            expiresAt,
-        });
-        await this.refreshTokenRepo.save(newToken);
+      // Create a new token
+      const newToken = this.refreshTokenRepo.create({
+        userNationalId: studentNationalId,
+        refreshToken: token,
+        expiresAt,
+      });
+      await this.refreshTokenRepo.save(newToken);
     }
+  }
 }
-

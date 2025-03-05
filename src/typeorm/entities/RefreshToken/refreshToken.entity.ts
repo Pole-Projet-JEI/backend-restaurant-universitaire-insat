@@ -18,5 +18,5 @@ export class RefreshToken extends TimeStamp {
 
   @IsDate()
   @Column({ type: "timestamp" })
-  expiresAt: Date; // would be more longer that the access token
+  expiresAt: Date;
 }

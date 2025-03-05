@@ -1,5 +1,5 @@
 import { IsInt, IsString, IsEmail, MinLength, IsEnum } from 'class-validator';
-import { UserRole } from '../../typeorm/entities/Users/User'; // Ensure correct import path
+import { UserRole } from '../../typeorm/entities/Users/User.abstract'; // Ensure correct import path
 
 export class CreateUserDto {
   @IsInt()
