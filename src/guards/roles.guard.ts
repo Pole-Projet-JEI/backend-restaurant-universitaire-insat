@@ -9,35 +9,29 @@ export class RolesGuard implements CanActivate {
     context: ExecutionContext,
   ): Promise<boolean> {
 
-    // Retrieve the roles metadata from the handler
     const requiredRoles = this.reflector.get<string[]>('roles', context.getHandler());
 
-    // If no roles are specified, allow access
     if (!requiredRoles) {
       return true;
     }
 
-    // Get the request object from the context
     const request = context.switchToHttp().getRequest();
-    const user = request.user; // Assuming user is attached to the request by JwtAuthGuard
+    const user = request.user; 
 
-    // If user is not authenticated, deny access
+    
     if (!user) {
       throw new ForbiddenException("Access denied: No user found.");
     }
 
-    // Validate if the user's role matches one of the required roles
-    const userRole = user.role; // Assuming role is a string, not an array
+    
+    const userRole = user.role; 
 
-    // Check if the user's role is one of the required roles
     const hasRole = requiredRoles.includes(userRole);
 
-    // If no matching role, deny access
     if (!hasRole) {
       throw new ForbiddenException("Access denied: Insufficient role.");
     }
 
-    // If the user has the required role, allow access
     return true;
   }
 }
