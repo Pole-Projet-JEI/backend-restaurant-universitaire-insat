@@ -4,10 +4,10 @@ import {
   JoinColumn,
   OneToOne,
   PrimaryGeneratedColumn,
-} from 'typeorm';
-import { TimeStamp } from './timeStamp';
-import { IsInt } from 'class-validator';
-import { Student } from './Users/Student';
+} from "typeorm";
+import { TimeStamp } from "./timeStamp.abstract";
+import { IsInt } from "class-validator";
+import { Student } from "./Users/Student.entity";
 
 @Entity()
 export class Transfert extends TimeStamp {
