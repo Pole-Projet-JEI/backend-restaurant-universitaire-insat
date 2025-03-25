@@ -1,11 +1,11 @@
-import { PrimaryColumn, Column } from 'typeorm';
-import { IsInt, IsString, IsEmail, Length, IsEnum } from 'class-validator';
-import { TimeStamp } from '../timeStamp';
+import { PrimaryColumn, Column } from "typeorm";
+import { IsInt, IsString, IsEmail, Length, IsEnum } from "class-validator";
+import { TimeStamp } from "../timeStamp.abstract";
 
 export enum UserRole {
-  STUDENT = 'student',
-  ADMIN = 'admin',
-  SUPERADMIN = 'superadmin',
+  STUDENT = "student",
+  ADMIN = "admin",
+  SUPERADMIN = "superadmin",
 }
 
 export abstract class User extends TimeStamp {
@@ -21,7 +21,7 @@ export abstract class User extends TimeStamp {
   @IsString()
   lastName: string;
 
-  @Column()
+  @Column({ unique: true })
   @IsEmail()
   email: string;
 
@@ -30,7 +30,7 @@ export abstract class User extends TimeStamp {
   @Length(6, 250)
   passwordHash: string;
 
-  @Column({ type: 'enum', enum: UserRole, default: UserRole.STUDENT })
+  @Column({ type: "enum", enum: UserRole, default: UserRole.STUDENT })
   @IsEnum(UserRole)
   role: UserRole;
 }

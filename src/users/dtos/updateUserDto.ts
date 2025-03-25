@@ -1,5 +1,5 @@
 import { IsInt, IsString, IsEmail, MinLength, IsEnum, IsOptional } from 'class-validator';
-import { UserRole } from '../../typeorm/entities/Users/User'; 
+import { UserRole } from '../../typeorm/entities/Users/User.abstract'; 
 
 export class UpdateUserDto {
   @IsOptional()
