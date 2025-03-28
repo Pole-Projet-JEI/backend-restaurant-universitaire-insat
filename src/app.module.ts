@@ -8,6 +8,7 @@ import { AuthModule } from "./auth/auth.module";
 import { JwtModule } from "@nestjs/jwt";
 import { RolesGuard } from "./guards/roles.guard";
 import { JwtAuthGuard } from "./guards/jwt-auth.guard";
+import { DishModule } from "./dishes/dish.module";
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import { JwtAuthGuard } from "./guards/jwt-auth.guard";
       }),
     }),
     AuthModule,
+    DishModule,
   ],
   controllers: [AppController],
   providers: [AppService, RolesGuard, JwtAuthGuard],

@@ -1,15 +1,15 @@
 import { IsDate, IsOptional, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
-import { DishDto } from '../../dishes/dtos/dishDto';
+import { CreateDishDto } from '../../dishes/dish.dto';
 
 export class DayMenuDto {
   @IsDate({ message: 'Invalid date format.' })
   date: Date;
 
   @ValidateNested({ each: true })
-  @Type(() => DishDto)
+  @Type(() => CreateDishDto)
   @IsOptional()
-  dishes?: DishDto[];
+  dishes?: CreateDishDto[];
 
   @IsOptional()
   weekMenuId?: number;
