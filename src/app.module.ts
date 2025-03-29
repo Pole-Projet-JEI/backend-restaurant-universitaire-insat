@@ -12,6 +12,12 @@ import { DishModule } from "./dishes/dish.module";
 import { DayMenuModule } from "./dayMenus/dayMenu.module";
 import { WeekMenuModule } from "./weekMenus/weekMenu.module";
 import { OrderModule } from "./orders/order.module";
+import { WalletsService } from './wallets/wallets.service';
+import { WalletsController } from './wallets/wallets.controller';
+import { WalletsModule } from './wallets/wallets.module';
+import { TicketsModule } from './tickets/tickets.module';
+import { QrcodeModule } from './qrcode/qrcode.module';
+import { TransferModule } from './transfer/transfer.module';
 
 @Module({
   imports: [
