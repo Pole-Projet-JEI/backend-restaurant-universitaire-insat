@@ -9,6 +9,7 @@ export class CreateDishDto {
   @Length(10, 255)
   description: string;
 
+  @IsOptional()
   @IsInt()
   @Min(0)
   @Max(5)

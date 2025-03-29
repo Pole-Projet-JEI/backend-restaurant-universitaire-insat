@@ -8,11 +8,22 @@ import {
 
 @Injectable()
 export abstract class GenericCrudService<Entity extends object> {
-  constructor(private readonly repository: Repository<Entity>) {}
+  constructor(protected readonly repository: Repository<Entity>) {}
 
   async create(data: DeepPartial<Entity>): Promise<Entity> {
     try {
       const entity = this.repository.create(data);
+
+      // Check if the entity has a 'createdAt' field and set it if missing
+      if ('createdAt' in entity && !(entity as any).createdAt) {
+        (entity as any).createdAt = new Date();
+      }
+
+      // Check if the entity has an 'updatedAt' field and set it if missing
+      if ('updatedAt' in entity && !(entity as any).updatedAt) {
+        (entity as any).updatedAt = new Date();
+      }
+
       return await this.repository.save(entity);
     } catch (error) {
       throw new ConflictException(
@@ -21,7 +32,7 @@ export abstract class GenericCrudService<Entity extends object> {
     }
   }
 
-  async findOne(id: number): Promise<Entity> {
+  async findOne(id: any): Promise<Entity> {
     if (!id) {
       throw new BadRequestException('ID parameter is required.');
     }
@@ -40,12 +51,18 @@ export abstract class GenericCrudService<Entity extends object> {
     return entities;
   }
 
-  async update(id: number, data: DeepPartial<Entity>): Promise<Entity> {
+  async update(id: any, data: DeepPartial<Entity>): Promise<Entity> {
     if (!id) {
       throw new BadRequestException('ID parameter is required.');
     }
-    await this.findOne(id);
+    const existingEntity = await this.findOne(id);
+
     try {
+      // Check if the entity has an 'updatedAt' field and set it to the current date on update
+      if ('updatedAt' in existingEntity && !(existingEntity as any).updatedAt) {
+        (data as any).updatedAt = new Date();
+      }
+
       await this.repository.update(id, data as any);
       return this.findOne(id);
     } catch (error) {
@@ -53,7 +70,7 @@ export abstract class GenericCrudService<Entity extends object> {
     }
   }
 
-  async delete(id: number): Promise<void> {
+  async delete(id: any): Promise<void> {
     const entity = await this.repository.findOne({ where: { id } as unknown as FindOptionsWhere<Entity> });
 
     if (!entity) {

@@ -1,6 +1,6 @@
 import { IsDate, IsInt, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
-import { DayMenuDto } from '../../dayMenus/dtos/dayMenuDto';
+import { DayMenu } from '../typeorm/entities/Restaurant/dayMenu.entity';
 
 export class WeekMenuDto {
   @IsDate({ message: 'Invalid start date format.' })
@@ -10,9 +10,9 @@ export class WeekMenuDto {
   weekEnd: Date;
 
   @IsInt({ message: 'Week number must be an integer.' })
-  numberWeek: number;
+  WeekNumber: number;
 
   @ValidateNested({ each: true })
-  @Type(() => DayMenuDto)
-  daysMenues?: DayMenuDto[];
+  @Type(() => DayMenu)
+  daysMenues?: DayMenu[];
 }

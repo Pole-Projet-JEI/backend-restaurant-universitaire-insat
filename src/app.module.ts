@@ -9,6 +9,8 @@ import { JwtModule } from "@nestjs/jwt";
 import { RolesGuard } from "./guards/roles.guard";
 import { JwtAuthGuard } from "./guards/jwt-auth.guard";
 import { DishModule } from "./dishes/dish.module";
+import { DayMenuModule } from "./dayMenus/dayMenu.module";
+import { WeekMenuModule } from "./weekMenus/weekMenu.module";
 
 @Module({
   imports: [
@@ -47,6 +49,8 @@ import { DishModule } from "./dishes/dish.module";
     }),
     AuthModule,
     DishModule,
+    DayMenuModule,
+    WeekMenuModule,
   ],
   controllers: [AppController],
   providers: [AppService, RolesGuard, JwtAuthGuard],
