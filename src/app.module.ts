@@ -12,7 +12,7 @@ import { DishModule } from "./dishes/dish.module";
 import { DayMenuModule } from "./dayMenus/dayMenu.module";
 import { WeekMenuModule } from "./weekMenus/weekMenu.module";
 import { OrderModule } from "./orders/order.module";
-import { TransferModule } from "./transfer/transfer.module";
+
 @Module({
   imports: [
     JwtModule.registerAsync({
@@ -49,6 +49,9 @@ import { TransferModule } from "./transfer/transfer.module";
     DayMenuModule,
     WeekMenuModule,
     OrderModule,
+    WalletsModule,
+    TicketsModule,
+    QrcodeModule,
     TransferModule,
   ],
   controllers: [AppController],
