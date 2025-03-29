@@ -11,6 +11,7 @@ import { JwtAuthGuard } from "./guards/jwt-auth.guard";
 import { DishModule } from "./dishes/dish.module";
 import { DayMenuModule } from "./dayMenus/dayMenu.module";
 import { WeekMenuModule } from "./weekMenus/weekMenu.module";
+import { OrderModule } from "./orders/order.module";
 
 @Module({
   imports: [
@@ -51,6 +52,7 @@ import { WeekMenuModule } from "./weekMenus/weekMenu.module";
     DishModule,
     DayMenuModule,
     WeekMenuModule,
+    OrderModule,
   ],
   controllers: [AppController],
   providers: [AppService, RolesGuard, JwtAuthGuard],

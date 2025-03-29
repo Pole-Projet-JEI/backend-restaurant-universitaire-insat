@@ -1,5 +1,5 @@
 import { User } from "./entities/Users/User.abstract";
-import { Student } from "./entities/Users/Student.entity";
+import { Student } from "./entities/Users/student.entity";
 import { Order } from "./entities/order.entity";
 import { DayMenu } from "./entities/Restaurant/dayMenu.entity";
 import { Dish } from "./entities/Restaurant/dish.entity";

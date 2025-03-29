@@ -6,7 +6,7 @@ import { DayMenuDto } from './dayMenu.dto';
 @Controller('day-menus')
 export class DayMenuController {
   constructor(private readonly dayMenuService: DayMenuService) {}
-
+  
   @Get(':date')
   async findOne(@Param('date') date: string): Promise<DayMenu> {
     const parsedDate = new Date(date);

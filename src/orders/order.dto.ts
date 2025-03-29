@@ -14,5 +14,5 @@ export class OrderDto {
   status: Status;
 
   @IsInt()
-  studentId: number;
+  studentNationalId: number;
 }
