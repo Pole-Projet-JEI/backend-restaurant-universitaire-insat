@@ -1,6 +1,6 @@
-import { Controller, Get, Post, Param, Body } from '@nestjs/common';
+import { Controller, Get, Post, Param, Body, ParseIntPipe } from '@nestjs/common';
 import { TransferService } from './transfer.service';
-import { Transfer } from '../typeorm/entities/transfer.entity';
+import { Transfer } from 'src/typeorm/entities/transfer.entity';
 import { CreateTransferDto } from './transfer.dto';
 
 @Controller('transfers')
@@ -8,22 +8,31 @@ export class TransferController {
   constructor(private readonly transferService: TransferService) {}
 
   @Post()
-  create(@Body() transferData: CreateTransferDto): Promise<Transfer> {
+  async create(@Body() transferData: CreateTransferDto): Promise<Transfer> {
     return this.transferService.create(transferData);
   }
 
   @Get()
-  findAll(): Promise<Transfer[]> {
+  async findAll(): Promise<Transfer[]> {
     return this.transferService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): Promise<Transfer> {
-    return this.transferService.findOne(+id);
+  async findOne(@Param('id', ParseIntPipe) id: number): Promise<Transfer> {
+    return this.transferService.findOne(id);
   }
 
-  @Get('student/:nationalId')
-  getByStudent(@Param('nationalId') nationalId: string): Promise<Transfer[]> {
-    return this.transferService.getTransfersByStudent(+nationalId);
+  @Get('from/:walletId')
+  async getOutgoingTransfers(
+    @Param('walletId', ParseIntPipe) walletId: number
+  ): Promise<Transfer[]> {
+    return this.transferService.getOutgoingTransfers(walletId);
+  }
+
+  @Get('to/:walletId')
+  async getIncomingTransfers(
+    @Param('walletId', ParseIntPipe) walletId: number
+  ): Promise<Transfer[]> {
+    return this.transferService.getIncomingTransfers(walletId);
   }
 }

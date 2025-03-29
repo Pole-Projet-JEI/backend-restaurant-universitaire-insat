@@ -1,7 +1,7 @@
 import { Controller, Post, Get, Patch, Delete, Body, Param, HttpCode, HttpStatus } from '@nestjs/common';
 import { QrcodeService } from './qrcode.service';
 import { QrCode } from 'src/typeorm/entities/qrCode.entity';
-import { UpdateQRCodeDto as QrcodeDto } from './dtos/qrCodeDto';
+import { UpdateQRCodeDto as QrcodeDto } from './dtos/QRCodeDto';
 
 @Controller('qrcodes')
 export class QrcodeController {

@@ -1,13 +1,6 @@
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  OneToOne,
-  PrimaryGeneratedColumn,
-} from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 import { TimeStamp } from "./timeStamp.abstract";
 import { IsInt } from "class-validator";
-import { Student } from "./Users/student.entity";
 
 @Entity()
 export class Transfer extends TimeStamp {
@@ -19,11 +12,11 @@ export class Transfer extends TimeStamp {
   @IsInt()
   quantity: number;
 
-  @OneToOne(() => Student)
-  @JoinColumn()
-  receiver: Student;
+  @Column({ name: 'sender_wallet_id' })
+  @IsInt()
+  senderWalletId: number;
 
-  @OneToOne(() => Student)
-  @JoinColumn()
-  sender: Student;
+  @Column({ name: 'receiver_wallet_id' })
+  @IsInt()
+  receiverWalletId: number;
 }
