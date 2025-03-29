@@ -10,8 +10,8 @@ import {
     BadRequestException,
     Put
   } from '@nestjs/common';
-  import { WeekMenuService } from './weekMenu.service';
-  import { WeekMenuDto } from './weekMenu.dto';
+import { WeekMenuService } from './weekMenu.service';
+import { WeekMenuDto } from './weekMenu.dto';
 import { DeepPartial } from 'typeorm';
   
   @Controller('week-menus')

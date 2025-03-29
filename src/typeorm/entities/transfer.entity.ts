@@ -10,7 +10,7 @@ import { IsInt } from "class-validator";
 import { Student } from "./Users/student.entity";
 
 @Entity()
-export class Transfert extends TimeStamp {
+export class Transfer extends TimeStamp {
   @PrimaryGeneratedColumn()
   @IsInt()
   id: number;
