@@ -12,6 +12,11 @@ import { DishModule } from "./dishes/dish.module";
 import { DayMenuModule } from "./dayMenus/dayMenu.module";
 import { WeekMenuModule } from "./weekMenus/weekMenu.module";
 import { OrderModule } from "./orders/order.module";
+import { WalletsService } from './wallets/wallets.service';
+import { WalletsController } from './wallets/wallets.controller';
+import { WalletsModule } from './wallets/wallets.module';
+import { TicketsModule } from './tickets/tickets.module';
+import { QrcodeModule } from './qrcode/qrcode.module';
 
 @Module({
   imports: [
@@ -40,11 +45,7 @@ import { OrderModule } from "./orders/order.module";
         username: configService.get<string>("DB_USERNAME"),
         password: configService.get<string>("DB_PASSWORD"),
         database: configService.get<string>("DB_NAME"),
-        "entities": ["dist/**/*.entity{.ts,.js}"],
-        "migrations": ["dist/migrations/*{.ts,.js}"],
-        "cli": {
-          "migrationsDir": "src/migrations"
-        } ,
+        entities,
         synchronize: true,
       }),
     }),
@@ -53,8 +54,11 @@ import { OrderModule } from "./orders/order.module";
     DayMenuModule,
     WeekMenuModule,
     OrderModule,
+    WalletsModule,
+    TicketsModule,
+    QrcodeModule,
   ],
   controllers: [AppController],
-  providers: [AppService, RolesGuard, JwtAuthGuard],
+  providers: [AppService, RolesGuard, JwtAuthGuard, WalletsService],
 })
 export class AppModule {}
