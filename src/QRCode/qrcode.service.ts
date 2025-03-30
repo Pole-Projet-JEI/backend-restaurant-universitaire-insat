@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { QrCode } from "src/typeorm/entities/qrcode.entity";
+import { QrCode } from "src/typeorm/entities/qrCode.entity";
 import { Repository } from "typeorm";
 import { GenericCrudService } from "src/generic-crud.service";
 
