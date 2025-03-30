@@ -43,8 +43,12 @@ import { QrcodeModule } from './QRCode/qrcode.module';
         username: configService.get<string>("DB_USERNAME"),
         password: configService.get<string>("DB_PASSWORD"),
         database: configService.get<string>("DB_NAME"),
-        entities,
+        entities: entities,
         synchronize: true,
+        migrations: ["dist/migrations/*{.ts,.js}"],
+        cli: {
+          migrationsDir: "src/migrations"
+        },
       }),
     }),
     AuthModule,
