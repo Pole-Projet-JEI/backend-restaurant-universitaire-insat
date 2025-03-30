@@ -7,7 +7,7 @@ import {
 } from "typeorm";
 import { TimeStamp } from "./timeStamp.abstract";
 import { IsInt } from "class-validator";
-import { Student } from "./Users/Student.entity";
+import { Student } from "./Users/student.entity";
 
 @Entity()
 export class Transfert extends TimeStamp {

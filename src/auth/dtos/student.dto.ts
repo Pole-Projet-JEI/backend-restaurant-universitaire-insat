@@ -1,6 +1,6 @@
 import { IsInt, IsEnum, IsEmail, IsString, Length } from "class-validator";
 import { UserRole } from "../../typeorm/entities/Users/User.abstract";
-import { Major } from "../../typeorm/entities/Users/Student.entity";
+import { Major } from "../../typeorm/entities/Users/student.entity";
 import { truncate } from "fs";
 
 export class CreateStudentDto {

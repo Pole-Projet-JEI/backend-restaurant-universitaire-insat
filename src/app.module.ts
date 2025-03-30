@@ -8,6 +8,13 @@ import { AuthModule } from "./auth/auth.module";
 import { JwtModule } from "@nestjs/jwt";
 import { RolesGuard } from "./guards/roles.guard";
 import { JwtAuthGuard } from "./guards/jwt-auth.guard";
+import { DishModule } from "./dishes/dish.module";
+import { DayMenuModule } from "./dayMenus/dayMenu.module";
+import { WeekMenuModule } from "./weekMenus/weekMenu.module";
+import { OrderModule } from "./orders/order.module";
+import { WalletsModule } from './wallets/wallets.module';
+import { TicketsModule } from './tickets/tickets.module';
+import { QrcodeModule } from './QRCode/qrcode.module';
 
 @Module({
   imports: [
@@ -36,15 +43,22 @@ import { JwtAuthGuard } from "./guards/jwt-auth.guard";
         username: configService.get<string>("DB_USERNAME"),
         password: configService.get<string>("DB_PASSWORD"),
         database: configService.get<string>("DB_NAME"),
-        "entities": ["dist/**/*.entity{.ts,.js}"],
-        "migrations": ["dist/migrations/*{.ts,.js}"],
-        "cli": {
-          "migrationsDir": "src/migrations"
-        } ,
+        entities: entities,
         synchronize: true,
+        migrations: ["dist/migrations/*{.ts,.js}"],
+        cli: {
+          migrationsDir: "src/migrations"
+        },
       }),
     }),
     AuthModule,
+    DishModule,
+    DayMenuModule,
+    WeekMenuModule,
+    OrderModule,
+    WalletsModule,
+    TicketsModule,
+    QrcodeModule,
   ],
   controllers: [AppController],
   providers: [AppService, RolesGuard, JwtAuthGuard],

@@ -1,7 +1,7 @@
 import { Module } from "@nestjs/common"
 import { AuthController } from "./auth.controller"
 import { AuthService } from "./auth.service"
-import { Student } from "src/typeorm/entities/Users/Student.entity"
+import { Student } from "src/typeorm/entities/Users/student.entity"
 import { TypeOrmModule } from "@nestjs/typeorm"
 import { Wallet } from "src/typeorm/entities/wallet.entity"
 import { QrCode } from "src/typeorm/entities/qrCode.entity"

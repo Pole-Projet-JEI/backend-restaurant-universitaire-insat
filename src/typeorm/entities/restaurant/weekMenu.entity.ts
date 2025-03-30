@@ -4,11 +4,11 @@ import { DayMenu } from "./dayMenu.entity";
 
 @Entity()
 export class WeekMenu {
-  @PrimaryColumn()
+  @PrimaryColumn({type: 'date'})
   @IsDate()
   weekStart: Date;
 
-  @PrimaryColumn()
+  @PrimaryColumn({type: 'date'})
   @IsDate()
   weekEnd: Date;
 
