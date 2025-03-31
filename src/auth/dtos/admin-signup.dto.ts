@@ -1,5 +1,5 @@
-import { IsInt, IsString, IsEmail, Length } from 'class-validator';
-import { UserRole } from 'src/typeorm/entities/Users/User.abstract';
+import { IsInt, IsString, IsEmail, Length } from "class-validator";
+import { UserRole } from "src/typeorm/entities/Users/User.abstract";
 
 export class CreateAdminDto {
   @IsInt()
@@ -16,7 +16,7 @@ export class CreateAdminDto {
 
   @IsString()
   @Length(6, 250)
-  password: string;
+  passwordHash: string;
 
   @IsString()
   jobTitle: string;

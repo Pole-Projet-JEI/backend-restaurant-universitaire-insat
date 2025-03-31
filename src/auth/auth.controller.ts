@@ -1,24 +1,40 @@
 import { Body, Controller, Post } from "@nestjs/common";
-import { AuthService } from "./auth.service";
+import { AuthServiceStudent } from "./auth.service.student";
 import { RefreshToken } from "./dtos/refresh-token.dto";
-
+import { AuthServiceAdmin } from "./auth.service.admin";
 
 @Controller("auth")
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authServiceStudent: AuthServiceStudent,
+    private readonly authServiceAdmin: AuthServiceAdmin
 
-  @Post("signup")
-  async signUp(@Body() signupData) {
-    return this.authService.createStudent(signupData);
+  ) {}
+
+  @Post("student-signup")
+  async signUpStudent(@Body() signupData) {
+    return this.authServiceStudent.createStudent(signupData);
   }
 
-  @Post("login")
+  @Post("student-login")
+  async loginStudent(@Body() credentials) {
+    return this.authServiceStudent.loginStudent(credentials);
+  }
+  @Post("admin-signup")
+  async signUpAdmin(@Body() signupData) {
+    return this.authServiceAdmin.createAdmin(signupData);
+  }
+  @Post("admin-login")
   async login(@Body() credentials) {
-    return this.authService.login(credentials);
+    return this.authServiceAdmin.loginAdmin(credentials);
   }
 
-  @Post("refresh")
-  async refreshTokens(@Body() refreshTokenDto: RefreshToken){
-    return this.authService.refreshTokens(refreshTokenDto.token)
+  @Post("student-refresh-token")
+  async refreshTokensStudent(@Body() refreshTokenDto: RefreshToken) {
+    return this.authServiceStudent.refreshTokens(refreshTokenDto.token);
+  }
+  @Post("admin-refresh-token")
+  async refreshTokensAdmin(@Body() refreshTokenDto: RefreshToken) {
+    return this.authServiceAdmin.refreshTokens(refreshTokenDto.token);
   }
 }

@@ -6,14 +6,14 @@ import { QrCode } from "src/typeorm/entities/qrCode.entity";
 import { CreateStudentDto } from "./dtos/student-signup.dto";
 import { MoreThanOrEqual, Repository } from "typeorm";
 import * as bcrypt from "bcrypt";
-import { LoginStudentDto } from "./dtos/student-login.dto";
+import { LoginSharedDto } from "./dtos/shared-login.dto";
 import { JwtService } from "@nestjs/jwt";
 import { RefreshToken } from "src/typeorm/entities/RefreshToken/refreshToken.entity";
 import { v4 as uuidv4 } from "uuid";
 import { ConfigService } from "@nestjs/config";
 
 @Injectable()
-export class AuthService {
+export class AuthServiceStudent {
   constructor(
     @InjectRepository(Student) private studentRepo: Repository<Student>,
     @InjectRepository(Wallet) private walletRepo: Repository<Wallet>,
@@ -46,13 +46,13 @@ export class AuthService {
     await this.studentRepo.save(student);
   }
 
-  async login(credentials: LoginStudentDto) {
+  async loginStudent(credentials: LoginSharedDto) {
     const { email, password } = credentials;
 
     // Find student by email
     const student = await this.studentRepo.findOne({ where: { email } });
     if (!student) {
-      throw new UnauthorizedException("Wrong credentials");
+      throw new UnauthorizedException("Wrong credentials Student!");
     }
 
     const passwordMatch = await bcrypt.compare(password, student.passwordHash);
