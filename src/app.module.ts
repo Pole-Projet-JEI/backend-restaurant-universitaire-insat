@@ -15,7 +15,6 @@ import { OrderModule } from "./orders/order.module";
 import { WalletsModule } from './wallets/wallets.module';
 import { TicketsModule } from './tickets/tickets.module';
 import { QrcodeModule } from './QRCode/qrcode.module';
-import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -56,7 +55,6 @@ import { UsersModule } from './users/users.module';
     WalletsModule,
     TicketsModule,
     QrcodeModule,
-    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService, RolesGuard, JwtAuthGuard],

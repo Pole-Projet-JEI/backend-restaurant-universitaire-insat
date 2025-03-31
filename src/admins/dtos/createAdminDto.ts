@@ -1,8 +1,27 @@
-import { IsString } from 'class-validator';
-import { CreateUserDto} from '../../users/dtos/createUserDto';  
+import { IsInt, IsString, IsEmail, Length } from 'class-validator';
+import { UserRole } from 'src/typeorm/entities/Users/User.abstract';
 
-export class CreateAdminDto extends CreateUserDto {
-    @IsString()
-    function : string ;
+export class CreateAdminDto {
+  @IsInt()
+  nationalId: number;
 
+  @IsString()
+  firstName: string;
+
+  @IsString()
+  lastName: string;
+
+  @IsEmail()
+  email: string;
+
+  @IsString()
+  @Length(6, 250)
+  password: string;
+
+  @IsString()
+  jobTitle: string;
+
+  // Optionally, if you want to include the role explicitly:
+  // It defaults to admin. In many cases, this field may be set automatically.
+  role?: UserRole = UserRole.ADMIN;
 }

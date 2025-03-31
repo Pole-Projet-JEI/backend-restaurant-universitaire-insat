@@ -22,14 +22,11 @@ export class JwtAuthGuard implements CanActivate {
 
     try {
       const payload = this.jwtService.verify(token);
-      console.log(request);
       request.user = {
         userId: payload.sub,
         email: payload.email,
         role: payload.role,
       };
-      console.log("_________________")
-      console.log(request);
       return true;
     } catch (err) {
       throw new UnauthorizedException("Invalid token");

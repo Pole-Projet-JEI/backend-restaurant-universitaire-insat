@@ -3,7 +3,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Student } from "src/typeorm/entities/Users/student.entity";
 import { Wallet } from "src/typeorm/entities/wallet.entity";
 import { QrCode } from "src/typeorm/entities/qrCode.entity";
-import { CreateStudentDto } from "./dtos/student.dto";
+import { CreateStudentDto } from "./dtos/student-signup.dto";
 import { MoreThanOrEqual, Repository } from "typeorm";
 import * as bcrypt from "bcrypt";
 import { LoginStudentDto } from "./dtos/student-login.dto";
@@ -25,7 +25,7 @@ export class AuthService {
   ) {}
 
   async createStudent(dto: CreateStudentDto) {
-    const hashedPassword = await bcrypt.hash(dto.password, 10);
+    const hashedPassword = await bcrypt.hash(dto.passwordHash, 10);
 
     // Create Wallet
     const wallet = this.walletRepo.create({ ticketBalance: 0 });
@@ -102,11 +102,6 @@ export class AuthService {
       email: studentEmail,
       role: studentRole,
     };
-    console.log("JWT_SECRET:", this.configService.get<string>("JWT_SECRET"));
-    console.log(
-      "JWT_EXPIRATION_TIME:",
-      this.configService.get<string>("JWT_EXPIRATION_TIME")
-    );
     const accessToken = this.jwtService.sign(payload, { expiresIn: 3600 });
     const refreshToken = uuidv4();
     await this.storeRefreshToken(refreshToken, studentNationalId);
