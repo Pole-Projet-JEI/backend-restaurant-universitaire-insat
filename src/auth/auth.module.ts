@@ -8,24 +8,14 @@ import { QrCode } from "src/typeorm/entities/qrCode.entity"
 import { RefreshToken } from "src/typeorm/entities/RefreshToken/refreshToken.entity"
 import { JwtModule } from "@nestjs/jwt"
 import { ConfigModule, ConfigService } from "@nestjs/config"
-import { PassportModule } from "@nestjs/passport"
-import { JwtStrategy } from "./jwt.strategy"
+
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Student, Wallet, QrCode, RefreshToken]),
-    PassportModule,
-    JwtModule.registerAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        secret: configService.get<string>("JWT_SECRET"),
-        signOptions: { expiresIn: "1h" },
-      }),
-    }),
+    TypeOrmModule.forFeature([Student, Wallet, QrCode, RefreshToken])
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy],
+  providers: [AuthService],
   exports: [AuthService],
 })
 export class AuthModule {}

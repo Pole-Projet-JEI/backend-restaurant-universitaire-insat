@@ -10,6 +10,7 @@ import { LoginStudentDto } from "./dtos/student-login.dto";
 import { JwtService } from "@nestjs/jwt";
 import { RefreshToken } from "src/typeorm/entities/RefreshToken/refreshToken.entity";
 import { v4 as uuidv4 } from "uuid";
+import { ConfigService } from "@nestjs/config";
 
 @Injectable()
 export class AuthService {
@@ -19,7 +20,8 @@ export class AuthService {
     @InjectRepository(QrCode) private qrCodeRepo: Repository<QrCode>,
     @InjectRepository(RefreshToken)
     private refreshTokenRepo: Repository<RefreshToken>,
-    private jwtService: JwtService
+    private jwtService: JwtService,
+    private configService: ConfigService
   ) {}
 
   async createStudent(dto: CreateStudentDto) {
@@ -46,7 +48,7 @@ export class AuthService {
 
   async login(credentials: LoginStudentDto) {
     const { email, password } = credentials;
-    
+
     // Find student by email
     const student = await this.studentRepo.findOne({ where: { email } });
     if (!student) {
@@ -77,10 +79,8 @@ export class AuthService {
       throw new UnauthorizedException("Refresh token is invalid");
     }
 
-    // Remove old refresh token (each user has only one active token)
     await this.refreshTokenRepo.remove(token);
 
-    // Find student by national ID
     const student = await this.studentRepo.findOne({
       where: { nationalId: token.userNationalId },
     });
@@ -98,12 +98,16 @@ export class AuthService {
 
   async generateStudentTokens(studentNationalId, studentEmail, studentRole) {
     const payload = {
-      sub: studentNationalId,  // Standard JWT field for subject
+      sub: studentNationalId, // Standard JWT field for subject
       email: studentEmail,
       role: studentRole,
     };
-
-    const accessToken = this.jwtService.sign(payload);
+    console.log("JWT_SECRET:", this.configService.get<string>("JWT_SECRET"));
+    console.log(
+      "JWT_EXPIRATION_TIME:",
+      this.configService.get<string>("JWT_EXPIRATION_TIME")
+    );
+    const accessToken = this.jwtService.sign(payload, { expiresIn: 3600 });
     const refreshToken = uuidv4();
     await this.storeRefreshToken(refreshToken, studentNationalId);
 

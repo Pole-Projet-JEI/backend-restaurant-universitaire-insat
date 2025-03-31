@@ -18,7 +18,7 @@ export class CreateStudentDto {
 
   @IsString()
   @Length(6, 250)
-  password: string; // Plain password (hashed later)
+  password: string;
 
   @IsEnum(UserRole)
   role: UserRole = UserRole.STUDENT;
