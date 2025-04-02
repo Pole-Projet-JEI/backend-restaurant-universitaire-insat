@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { IsInt, IsEnum } from 'class-validator';
 
 enum Status {
@@ -7,12 +8,15 @@ enum Status {
 }
 
 export class OrderDto {
+  @ApiProperty({})
   @IsInt()
   quantity: number;
 
+  @ApiProperty({})
   @IsEnum(Status, { message: 'Invalid status.' })
   status: Status;
 
+  @ApiProperty({})
   @IsInt()
   studentNationalId: number;
 }
