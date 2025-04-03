@@ -4,6 +4,7 @@ import { DayMenu } from '../typeorm/entities/Restaurant/dayMenu.entity';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class WeekMenuDto {
+  
   @ApiProperty({})
   @IsDate({ message: 'Invalid start date format.' })
   weekStart: Date;

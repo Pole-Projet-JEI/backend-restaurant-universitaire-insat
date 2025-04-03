@@ -3,32 +3,53 @@ import { IsInt, IsString, IsEmail, Length } from "class-validator";
 import { UserRole } from "src/typeorm/entities/Users/User.abstract";
 
 export class CreateAdminDto {
-  @ApiProperty({})
+  @ApiProperty({
+    description: "Unique national ID for the admin",
+    example: 123456,
+  })
   @IsInt()
   nationalId: number;
 
-  @ApiProperty({})
+  @ApiProperty({
+    description: "Admin first name",
+    example: "Alice",
+  })
   @IsString()
   firstName: string;
 
-  @ApiProperty({})
+  @ApiProperty({
+    description: "Admin last name",
+    example: "Smith",
+  })
   @IsString()
   lastName: string;
 
-  @ApiProperty({})
+  @ApiProperty({
+    description: "Admin email address",
+    example: "admin@example.com",
+  })
   @IsEmail()
   email: string;
 
-  @ApiProperty({})
+  @ApiProperty({
+    description: "Password for the admin account (will be hashed)",
+    example: "elMoudirPorFavor_00croissant",
+  })
   @IsString()
-  @Length(6, 250)
+  @Length(8, 250)
   passwordHash: string;
 
-  @ApiProperty({})
+  @ApiProperty({
+    description: "Job title for the admin",
+    example: "System Administrator",
+  })
   @IsString()
   jobTitle: string;
 
-  // Optionally, if you want to include the role explicitly:
-  // It defaults to admin. In many cases, this field may be set automatically.
+  @ApiProperty({
+    description: "Role of the user (defaults to admin)",
+    example: UserRole.ADMIN,
+    default: UserRole.ADMIN,
+  })
   role?: UserRole = UserRole.ADMIN;
 }

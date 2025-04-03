@@ -13,12 +13,14 @@ import {
   import { WeekMenuService } from './weekMenu.service';
   import { WeekMenuDto } from './weekMenu.dto';
 import { DeepPartial } from 'typeorm';
+import { ApiBadGatewayResponse, ApiCreatedResponse } from '@nestjs/swagger';
   
   @Controller('week-menus')
   export class WeekMenuController {
     constructor(private readonly weekMenuService: WeekMenuService) {}
     
     // create week menu without associated day menus
+    @ApiCreatedResponse({})
     @Post()
     async create(@Body() data: WeekMenuDto) {
       try {
@@ -29,6 +31,7 @@ import { DeepPartial } from 'typeorm';
     }
 
     // Create week menu with associated day menus
+    @ApiCreatedResponse({})
     @Post('with-days')
     async createWithDays(@Body() data: WeekMenuDto) {
       try {
@@ -39,6 +42,7 @@ import { DeepPartial } from 'typeorm';
     }
   
     // Get weekmenu by week number
+    @ApiCreatedResponse({})
     @Get(':weekNumber')
     async findByWeekNumber(@Param('weekNumber') weekNumber: string) {
       const result = await this.weekMenuService.findByWeekNumber(parseInt(weekNumber));
@@ -50,6 +54,7 @@ import { DeepPartial } from 'typeorm';
   
 
     // Get all week menus with their associated dishes
+    @ApiCreatedResponse({})
     @Get('with-dishes/:weekNumber')  
     async getWeekMenuWithDishes(
     @Param('weekNumber') weekNumber: string  // Kept as string for parsing
@@ -64,6 +69,7 @@ import { DeepPartial } from 'typeorm';
     }
     
     //update week menu by week number
+    @ApiCreatedResponse({})
     @Put(':weekNumber')
     async update(
     @Param('weekNumber') weekNumber: string,
@@ -74,6 +80,8 @@ import { DeepPartial } from 'typeorm';
     
     // delete week menu by week number
     // Note: This method first finds the week menu by week number and then deletes it using the composite key (weekStart, weekEnd).
+    @ApiCreatedResponse({})
+    @ApiBadGatewayResponse({})
     @Delete(':weekNumber')
     async delete(@Param('weekNumber') weekNumber: string) {
     try {

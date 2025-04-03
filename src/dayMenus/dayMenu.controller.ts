@@ -2,11 +2,13 @@ import { Controller, Get, Post, Put, Delete, Param, Body, Query, BadRequestExcep
 import { DayMenuService } from './dayMenu.service';
 import { DayMenu } from '../typeorm/entities/Restaurant/dayMenu.entity';
 import { DayMenuDto } from './dayMenu.dto';
+import { ApiCreatedResponse } from '@nestjs/swagger';
 
 @Controller('day-menus')
 export class DayMenuController {
   constructor(private readonly dayMenuService: DayMenuService) {}
   
+  @ApiCreatedResponse({})
   @Get(':date')
   async findOne(@Param('date') date: string): Promise<DayMenu> {
     const parsedDate = new Date(date);
@@ -16,11 +18,13 @@ export class DayMenuController {
     return this.dayMenuService.findOne(parsedDate);
   }
 
+  @ApiCreatedResponse({})
   @Post()
   async create(@Body() data: DayMenuDto): Promise<DayMenu> {
     return this.dayMenuService.create(data);
   }
 
+  @ApiCreatedResponse({})
   @Put(':date')
   async update(
     @Param('date') date: string,
@@ -33,6 +37,7 @@ export class DayMenuController {
     return this.dayMenuService.update(parsedDate, data);
   }
 
+  @ApiCreatedResponse({})
   @Delete(':date')
   async delete(@Param('date') date: string): Promise<{ message: string }> {
     const parsedDate = new Date(date);

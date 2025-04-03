@@ -10,6 +10,7 @@ async function bootstrap() {
     .setTitle("restaurant insat admin backend")
     .setDescription("API documentation restaurant insat")
     .setVersion("1.0")
+    .addBearerAuth()
     .addTag("RESTAU")
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
