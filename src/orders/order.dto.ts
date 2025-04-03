@@ -1,10 +1,10 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsInt, IsEnum } from 'class-validator';
+import { ApiProperty } from "@nestjs/swagger";
+import { IsInt, IsEnum } from "class-validator";
 
 enum Status {
-  ACCEPTED = 'accepted',
-  WAITING = 'waiting',
-  DECLINED = 'declined',
+  ACCEPTED = "accepted",
+  WAITING = "waiting",
+  DECLINED = "declined",
 }
 
 export class OrderDto {
@@ -13,7 +13,7 @@ export class OrderDto {
   quantity: number;
 
   @ApiProperty({})
-  @IsEnum(Status, { message: 'Invalid status.' })
+  @IsEnum(Status, { message: "Invalid status." })
   status: Status;
 
   @ApiProperty({})
