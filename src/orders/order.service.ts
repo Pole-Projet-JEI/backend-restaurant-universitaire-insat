@@ -55,6 +55,7 @@ export class OrderService extends GenericCrudService<Order> {
   }
 
   async getOrdersByStatus(status: Status): Promise<Order[]> {
+    // clean the object please
     return this.orderRepository.find({
       where: { status },
       relations: ['student'],

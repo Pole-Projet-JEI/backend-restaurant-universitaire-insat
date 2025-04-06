@@ -3,27 +3,29 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Student } from "src/typeorm/entities/Users/student.entity";
 import { Wallet } from "src/typeorm/entities/wallet.entity";
 import { QrCode } from "src/typeorm/entities/qrCode.entity";
-import { CreateStudentDto } from "./dtos/student.dto";
+import { CreateStudentDto } from "./dtos/student-signup.dto";
 import { MoreThanOrEqual, Repository } from "typeorm";
 import * as bcrypt from "bcrypt";
-import { LoginStudentDto } from "./dtos/student-login.dto";
+import { LoginSharedDto } from "./dtos/shared-login.dto";
 import { JwtService } from "@nestjs/jwt";
 import { RefreshToken } from "src/typeorm/entities/RefreshToken/refreshToken.entity";
 import { v4 as uuidv4 } from "uuid";
+import { ConfigService } from "@nestjs/config";
 
 @Injectable()
-export class AuthService {
+export class AuthServiceStudent {
   constructor(
     @InjectRepository(Student) private studentRepo: Repository<Student>,
     @InjectRepository(Wallet) private walletRepo: Repository<Wallet>,
     @InjectRepository(QrCode) private qrCodeRepo: Repository<QrCode>,
     @InjectRepository(RefreshToken)
     private refreshTokenRepo: Repository<RefreshToken>,
-    private jwtService: JwtService
+    private jwtService: JwtService,
+    private configService: ConfigService
   ) {}
 
   async createStudent(dto: CreateStudentDto) {
-    const hashedPassword = await bcrypt.hash(dto.password, 10);
+    const hashedPassword = await bcrypt.hash(dto.passwordHash, 10);
 
     // Create Wallet
     const wallet = this.walletRepo.create({ ticketBalance: 0 });
@@ -44,13 +46,13 @@ export class AuthService {
     await this.studentRepo.save(student);
   }
 
-  async login(credentials: LoginStudentDto) {
+  async loginStudent(credentials: LoginSharedDto) {
     const { email, password } = credentials;
-    
+
     // Find student by email
     const student = await this.studentRepo.findOne({ where: { email } });
     if (!student) {
-      throw new UnauthorizedException("Wrong credentials");
+      throw new UnauthorizedException("Wrong credentials Student!");
     }
 
     const passwordMatch = await bcrypt.compare(password, student.passwordHash);
@@ -77,10 +79,8 @@ export class AuthService {
       throw new UnauthorizedException("Refresh token is invalid");
     }
 
-    // Remove old refresh token (each user has only one active token)
     await this.refreshTokenRepo.remove(token);
 
-    // Find student by national ID
     const student = await this.studentRepo.findOne({
       where: { nationalId: token.userNationalId },
     });
@@ -98,12 +98,11 @@ export class AuthService {
 
   async generateStudentTokens(studentNationalId, studentEmail, studentRole) {
     const payload = {
-      sub: studentNationalId,  // Standard JWT field for subject
+      sub: studentNationalId, // Standard JWT field for subject
       email: studentEmail,
       role: studentRole,
     };
-
-    const accessToken = this.jwtService.sign(payload);
+    const accessToken = this.jwtService.sign(payload, { expiresIn: 3600 });
     const refreshToken = uuidv4();
     await this.storeRefreshToken(refreshToken, studentNationalId);
 
