@@ -7,10 +7,10 @@ import {
 } from "typeorm";
 import { TimeStamp } from "./timeStamp.abstract";
 import { IsInt } from "class-validator";
-import { Student } from "./Users/student.entity";
+import { Student } from "./Users/Student.entity";
 
 @Entity()
-export class Transfert extends TimeStamp {
+export class Transfer extends TimeStamp {
   @PrimaryGeneratedColumn()
   @IsInt()
   id: number;

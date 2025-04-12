@@ -2,7 +2,7 @@ import { Injectable,ExecutionContext, UnauthorizedException } from "@nestjs/comm
 import { AuthGuard } from "@nestjs/passport";
 import { Admin } from "../typeorm/entities/Users/Admin.entity";
 import { SuperAdmin } from "../typeorm/entities/Users/superAdmin.entity";
-import { Student } from "../typeorm/entities/Users/student.entity";
+import { Student } from "../typeorm/entities/Users/Student.entity";
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard("jwt") {

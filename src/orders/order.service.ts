@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Order } from '../typeorm/entities/order.entity';
 import { GenericCrudService } from '../generic-crud.service';
 import { Repository, FindOptionsWhere } from 'typeorm';
-import { Student } from '../typeorm/entities/Users/student.entity';
+import { Student } from '../typeorm/entities/Users/Student.entity';
 import { OrderDto } from './order.dto';
 import { Status } from '../typeorm/entities/order.entity';
 

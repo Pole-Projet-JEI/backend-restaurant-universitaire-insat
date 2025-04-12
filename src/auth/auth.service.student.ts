@@ -1,6 +1,6 @@
 import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Student } from "src/typeorm/entities/Users/student.entity";
+import { Student } from "src/typeorm/entities/Users/Student.entity";
 import { Wallet } from "src/typeorm/entities/wallet.entity";
 import { QrCode } from "src/typeorm/entities/qrCode.entity";
 import { CreateStudentDto } from "./dtos/student-signup.dto";

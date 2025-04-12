@@ -7,7 +7,7 @@ import {
   MinLength,
   IsEnum,
 } from "class-validator";
-import { Major } from "src/typeorm/entities/Users/student.entity";
+import { Major } from "src/typeorm/entities/Users/Student.entity";
 import { UserRole } from "src/typeorm/entities/Users/User.abstract";
 
 export class CreateStudentDto {
