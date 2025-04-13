@@ -26,4 +26,5 @@ export class Transfer extends TimeStamp {
   @OneToOne(() => Student)
   @JoinColumn()
   sender: Student;
+    status: any;
 }

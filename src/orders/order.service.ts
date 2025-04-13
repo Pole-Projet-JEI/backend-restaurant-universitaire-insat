@@ -9,6 +9,7 @@ import { Status } from '../typeorm/entities/order.entity';
 import { Wallet } from '../typeorm/entities/wallet.entity';
 import { plainToInstance } from 'class-transformer';
 import { returnStudentDto } from '../users/dtos/returnStudentDto';
+import { Ticket } from 'src/typeorm/entities/ticket.entity';
 
 @Injectable()
 export class OrderService extends GenericCrudService<Order> {
@@ -19,6 +20,8 @@ export class OrderService extends GenericCrudService<Order> {
     private readonly studentRepository: Repository<Student>,
     @InjectRepository(Wallet)
     private readonly walletRepository: Repository<Wallet>,
+    @InjectRepository(Ticket)
+    private readonly ticketRepository: Repository<Ticket>,
   ) {
     super(orderRepository);
   }
@@ -103,25 +106,48 @@ export class OrderService extends GenericCrudService<Order> {
       where: { id },
       relations: ['student', 'student.wallet'],
     });
-  
+
     if (!order) {
       throw new NotFoundException(`Order with id ${id} not found`);
     }
-  
+
     if (order.status !== Status.WAITING) {
       throw new BadRequestException(`Order with id ${id} is not waiting`);
     }
-  
-    order.student.wallet.ticketBalance += order.quantity;
-    await this.walletRepository.save(order.student.wallet);
 
-    order.updatedAt = new Date();
-    order.status = Status.ACCEPTED;
-    await this.orderRepository.save(order);
-  
+    // Get the next available ticket number
+    const lastTicket = await this.ticketRepository.findOne({
+      where: {},
+      order: { ticketNumber: 'DESC' },
+      select: ['ticketNumber'],
+    });
+    const nextTicketNumber = lastTicket ? lastTicket.ticketNumber + 1 : 1;
+
+    // Create tickets in a transaction
+    await this.orderRepository.manager.transaction(async (transactionalEntityManager) => {
+      // Create new tickets with DORMANT status
+      const tickets = Array.from({ length: order.quantity }, (_, i) =>
+        this.ticketRepository.create({
+          ticketNumber: nextTicketNumber + i,
+          status: 'dormant', // Explicitly set to DORMANT
+          wallet: order.student.wallet,
+        })
+      );
+
+      await transactionalEntityManager.save(tickets);
+
+      // Update wallet balance
+      order.student.wallet.ticketBalance += order.quantity;
+      await transactionalEntityManager.save(order.student.wallet);
+
+      // Update order status
+      order.status = Status.ACCEPTED;
+      order.updatedAt = new Date();
+      await transactionalEntityManager.save(order);
+    });
+
     return this.mapOrderStudent(order);
   }
-
   async rejectOrder(id: number): Promise<Order> {
     const order = await this.orderRepository.findOne({ where: { id } });
   

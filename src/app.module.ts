@@ -15,6 +15,8 @@ import { OrderModule } from "./orders/order.module";
 import { WalletsModule } from './wallets/wallets.module';
 import { TicketsModule } from './tickets/tickets.module';
 import { QrcodeModule } from './QRCode/qrcode.module';
+import { Transfer } from "./typeorm/entities/transfer.entity";
+import { TransferModule } from "./transfer/transfer.module";
 
 @Module({
   imports: [
@@ -59,6 +61,7 @@ import { QrcodeModule } from './QRCode/qrcode.module';
     WalletsModule,
     TicketsModule,
     QrcodeModule,
+    TransferModule,
   ],
   controllers: [AppController],
   providers: [AppService, RolesGuard, JwtAuthGuard],
