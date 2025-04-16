@@ -1,5 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsInt, IsEnum } from "class-validator";
+import { Expose } from "class-transformer";
+import { IsInt, IsEnum, IsOptional } from "class-validator";
+import { Type } from "class-transformer";
 
 enum Status {
   ACCEPTED = "accepted",
@@ -19,4 +21,7 @@ export class OrderDto {
   @ApiProperty({})
   @IsInt()
   studentNationalId: number;
+
+
+
 }

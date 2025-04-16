@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
 import { TimeStamp } from "./timeStamp.abstract";
 import { IsEnum, IsInt } from "class-validator";
-import { Student } from "./Users/student.entity";
+import { Student } from "./Users/Student.entity";
 
 export enum Status {
   ACCEPTED = "accepted",

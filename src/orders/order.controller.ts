@@ -50,4 +50,18 @@ export class OrderController {
   getStudentOrders(@Param('studentId') studentId: string): Promise<Order[]> {
     return this.orderService.getStudentOrders(+studentId);
   }
+  //make endpoints for accept order 
+  @ApiCreatedResponse({})
+  @Put('accept/:id')
+  acceptOrder(@Param('id') id: string): Promise<Order> {
+    return this.orderService.acceptOrder(+id);
+  }
+  //make endpoints for reject order
+
+  @ApiCreatedResponse({})
+  @Put('reject/:id')
+  rejectOrder(@Param('id') id: string): Promise<Order> {
+    return this.orderService.rejectOrder(+id);
+  }
+  
 }
