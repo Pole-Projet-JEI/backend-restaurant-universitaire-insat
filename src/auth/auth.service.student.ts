@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from "@nestjs/common";
+import { HttpStatus, HttpException, Injectable, UnauthorizedException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Student } from "src/typeorm/entities/Users/Student.entity";
 import { Wallet } from "src/typeorm/entities/wallet.entity";
@@ -23,9 +23,20 @@ export class AuthServiceStudent {
     private jwtService: JwtService,
     private configService: ConfigService
   ) {}
-
+  
   async createStudent(dto: CreateStudentDto) {
-    const hashedPassword = await bcrypt.hash(dto.passwordHash, 10);
+    //If I find a student with same email or same CIN or same registration number, I throw an error
+    const studentExists = await this.studentRepo.findOne({
+      where: [
+        { email: dto.email },
+        { nationalId: dto.nationalId },
+        { registrationNumber: dto.registrationNumber },
+      ],
+    });
+    if (studentExists != null) {
+      throw new HttpException("Student already exists", HttpStatus.BAD_REQUEST);
+    }
+    const hashedPassword = await bcrypt.hash(dto.password, 10);
 
     // Create Wallet
     const wallet = this.walletRepo.create({ ticketBalance: 0 });

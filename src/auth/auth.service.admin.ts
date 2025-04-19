@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable, UnauthorizedException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Admin } from "src/typeorm/entities/Users/Admin.entity";
 import { Repository, MoreThanOrEqual } from "typeorm";
@@ -22,7 +22,16 @@ export class AuthServiceAdmin {
   ) {}
 
   async createAdmin(dto: CreateAdminDto) {
-    const hashedPassword = await bcrypt.hash(dto.passwordHash, 10);
+    const adminExists = await this.adminRepo.findOne({
+      where: [
+        { email: dto.email },
+        { nationalId: dto.nationalId },
+      ],
+    });
+    if (adminExists != null) {
+      throw new HttpException("Student already exists", HttpStatus.BAD_REQUEST);
+    }
+    const hashedPassword = await bcrypt.hash(dto.password, 10);
     const admin = this.adminRepo.create({
       ...dto,
       passwordHash: hashedPassword,
