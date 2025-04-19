@@ -47,7 +47,7 @@ export class CreateStudentDto {
   })
   @IsString()
   @MinLength(8, { message: "Password must have at least 8 characters." })
-  passwordHash: string;
+  password: string;
 
   @ApiProperty({
     description: "Registration number for the student",

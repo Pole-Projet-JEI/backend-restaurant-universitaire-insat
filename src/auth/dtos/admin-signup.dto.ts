@@ -37,7 +37,7 @@ export class CreateAdminDto {
   })
   @IsString()
   @Length(8, 250)
-  passwordHash: string;
+  password: string;
 
   @ApiProperty({
     description: "Job title for the admin",
