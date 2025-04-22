@@ -19,7 +19,7 @@ import {
 } from "@nestjs/swagger";
 import { QrcodeService } from "./qrcode.service";
 import { QrCode } from "src/typeorm/entities/qrCode.entity";
-import { UpdateQRCodeDto as QrcodeDto } from "./dtos/QRCodeDto";
+import { QRCodeDto as QrcodeDto } from "./dtos/qr-code.dto";
 
 @ApiTags("qrcodes")
 @Controller("qrcodes")

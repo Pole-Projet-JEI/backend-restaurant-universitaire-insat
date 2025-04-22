@@ -8,9 +8,13 @@ import { Wallet } from "src/typeorm/entities/wallet.entity";
 import { QrCode } from "src/typeorm/entities/qrCode.entity";
 import { RefreshToken } from "src/typeorm/entities/RefreshToken/refreshToken.entity";
 import { Admin } from "src/typeorm/entities/Users/Admin.entity";
+import { QrcodeModule } from "src/QRCode/qrcode.module";
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Student, Wallet, QrCode, RefreshToken, Admin])],
+  imports: [
+    TypeOrmModule.forFeature([Student, Wallet, QrCode, RefreshToken, Admin]),
+    QrcodeModule,
+  ],
   controllers: [AuthController],
   providers: [AuthServiceStudent, AuthServiceAdmin],
 })

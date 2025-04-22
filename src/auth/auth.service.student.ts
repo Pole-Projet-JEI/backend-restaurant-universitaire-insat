@@ -1,4 +1,9 @@
-import { HttpStatus, HttpException, Injectable, UnauthorizedException } from "@nestjs/common";
+import {
+  HttpStatus,
+  HttpException,
+  Injectable,
+  UnauthorizedException,
+} from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Student } from "src/typeorm/entities/Users/Student.entity";
 import { Wallet } from "src/typeorm/entities/wallet.entity";
@@ -11,6 +16,7 @@ import { JwtService } from "@nestjs/jwt";
 import { RefreshToken } from "src/typeorm/entities/RefreshToken/refreshToken.entity";
 import { v4 as uuidv4 } from "uuid";
 import { ConfigService } from "@nestjs/config";
+import { QrcodeService } from "src/QRCode/qrcode.service";
 
 @Injectable()
 export class AuthServiceStudent {
@@ -21,9 +27,10 @@ export class AuthServiceStudent {
     @InjectRepository(RefreshToken)
     private refreshTokenRepo: Repository<RefreshToken>,
     private jwtService: JwtService,
-    private configService: ConfigService
+    private configService: ConfigService,
+    private readonly qrCodeService: QrcodeService
   ) {}
-  
+
   async createStudent(dto: CreateStudentDto) {
     //If I find a student with same email or same CIN or same registration number, I throw an error
     const studentExists = await this.studentRepo.findOne({
@@ -43,8 +50,8 @@ export class AuthServiceStudent {
     await this.walletRepo.save(wallet);
 
     // Create QR Code
-    const qrCode = this.qrCodeRepo.create({ code: `QR-${dto.nationalId}` });
-    await this.qrCodeRepo.save(qrCode);
+    const code = uuidv4();
+    const qrCode = this.qrCodeService.create({ userId: dto.nationalId, code });
 
     // Create Student
     const student = this.studentRepo.create({

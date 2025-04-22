@@ -1,13 +1,13 @@
-import { IsInt, IsString } from 'class-validator';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { IsInt, IsString } from "class-validator";
+import { BaseEntity, Column, Entity, PrimaryColumn } from "typeorm";
 
 @Entity()
-export class QrCode {
-  @PrimaryGeneratedColumn()
+export class QrCode extends BaseEntity {
+  @PrimaryColumn()
   @IsInt()
-  id: number;
+  userId: number;
 
-  @Column()
+  @Column({ unique: true })
   @IsString()
   code: string;
 }
