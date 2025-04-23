@@ -6,7 +6,6 @@ import { Dish } from "./entities/Restaurant/dish.entity";
 import { WeekMenu } from "./entities/Restaurant/weekMenu.entity";
 import { Admin } from "./entities/Users/Admin.entity";
 import { SuperAdmin } from "./entities/Users/superAdmin.entity";
-import { QrCode } from "./entities/qrCode.entity";
 import { Ticket } from "./entities/ticket.entity";
 import { TimeStamp } from "./entities/timeStamp.abstract";
 import { Transfer } from "./entities/transfer.entity";
@@ -22,7 +21,6 @@ export const entities = [
   Dish,
   WeekMenu,
   Order,
-  QrCode,
   Ticket,
   TimeStamp,
   Transfer,

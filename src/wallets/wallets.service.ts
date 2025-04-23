@@ -5,17 +5,37 @@ import { Wallet } from "src/typeorm/entities/wallet.entity";
 import { Repository } from "typeorm";
 import { AddTicketDto } from "./dtos/add-ticket.dto";
 import { Ticket } from "src/typeorm/entities/ticket.entity";
+import { Student } from "src/typeorm/entities/Users/Student.entity";
 @Injectable()
 export class WalletsService extends GenericCrudService<Wallet> {
   constructor(
     @InjectRepository(Wallet)
     private readonly walletRepository: Repository<Wallet>,
     @InjectRepository(Ticket)
-    private readonly ticketRepository: Repository<Ticket>
+    private readonly ticketRepository: Repository<Ticket>,
+    @InjectRepository(Student)
+    private readonly studentRepository: Repository<Student>
   ) {
     super(walletRepository);
   }
-
+  async getWalletByStudentCIN(cin: number) {
+    const student = await this.studentRepository.findOne({
+      where: {
+        nationalId: cin,
+      },
+      relations: ["wallet"],
+    });
+    if (!student) {
+      throw new NotFoundException(`Student with CIN ${cin} not found.`);
+    }
+    const wallet = student.wallet;
+    if (!wallet) {
+      throw new NotFoundException(
+        `Wallet for student with CIN ${cin} not found.`
+      );
+    }
+    return wallet;
+  }
   async getTickets(walletId: number) {
     const wallet = await this.walletRepository.findOne({
       where: { id: walletId },
@@ -75,7 +95,6 @@ export class WalletsService extends GenericCrudService<Wallet> {
     }
     await this.repository.save(wallet);
   }
-
   async removeFirstNTickets(walletId: number, n: number): Promise<void> {
     const tickets = await this.ticketRepository.find({
       where: { wallet: { id: walletId } },
@@ -91,5 +110,10 @@ export class WalletsService extends GenericCrudService<Wallet> {
     for (const ticket of tickets) {
       await this.ticketRepository.delete(ticket.id);
     }
+  }
+  async removeFirstNTicketsWithCIN(cin: number, n: number): Promise<void> {
+    const wallet = await this.getWalletByStudentCIN(cin);
+
+    await this.removeFirstNTickets(wallet.id, n);
   }
 }

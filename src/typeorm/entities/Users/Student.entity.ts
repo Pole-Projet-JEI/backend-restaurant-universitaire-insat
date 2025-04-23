@@ -3,7 +3,6 @@ import { IsEnum, IsInt } from "class-validator";
 import { User } from "./User.abstract";
 import { Order } from "../order.entity";
 import { Wallet } from "../wallet.entity";
-import { QrCode } from "../qrCode.entity";
 
 export enum Major {
   RT = "RT",
@@ -35,8 +34,4 @@ export class Student extends User {
   @OneToOne(() => Wallet)
   @JoinColumn()
   wallet: Wallet;
-
-  @OneToOne(() => QrCode, { cascade: true })
-  @JoinColumn({ name: "QrCodeId", referencedColumnName: "userId" }) 
-  qrCode: QrCode;
 }

@@ -14,9 +14,8 @@ import { WeekMenuModule } from "./weekMenus/weekMenu.module";
 import { OrderModule } from "./orders/order.module";
 import { WalletsModule } from './wallets/wallets.module';
 import { TicketsModule } from './tickets/tickets.module';
-import { QrcodeModule } from './QRCode/qrcode.module';
-import { Transfer } from "./typeorm/entities/transfer.entity";
 import { TransferModule } from "./transfer/transfer.module";
+import { ScanModule } from './scan/scan.module';
 
 @Module({
   imports: [
@@ -60,8 +59,8 @@ import { TransferModule } from "./transfer/transfer.module";
     OrderModule,
     WalletsModule,
     TicketsModule,
-    QrcodeModule,
     TransferModule,
+    ScanModule,
   ],
   controllers: [AppController],
   providers: [AppService, RolesGuard, JwtAuthGuard],

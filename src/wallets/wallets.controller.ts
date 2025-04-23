@@ -123,6 +123,21 @@ export class WalletsController {
     );
   }
 
+  @Delete("studnet/:cin/:numberOfTickets")
+  @ApiNoContentResponse({
+    description: "Tickets removed from wallet successfully",
+  })
+  @ApiNotFoundResponse({ description: "Wallet or ticket or student not found" })
+  async removeFirstNTicketsFromWalletWithCIN(
+    @Param("cin") cin: string,
+    @Param("numberOfTickets") numberOfTickets: string
+  ): Promise<void> {
+    return this.walletsService.removeFirstNTicketsWithCIN(
+      Number(cin),
+      Number(numberOfTickets)
+    );
+  }
+
   @Delete(":walletId/:numberOfTickets")
   @ApiNoContentResponse({
     description: "Tickets removed from wallet successfully",
@@ -133,10 +148,19 @@ export class WalletsController {
     @Param("walletId") walletId: string,
     @Param("numberOfTickets") numberOfTickets: string
   ): Promise<void> {
-    const numberOfTicketsToRemove = Number(numberOfTickets);
     return this.walletsService.removeFirstNTickets(
       Number(walletId),
-      numberOfTicketsToRemove
+      Number(numberOfTickets)
     );
+  }
+
+  @Get("student/:cin")
+  @ApiOkResponse({
+    description: "Wallet found for the student",
+    type: WalletDto,
+  })
+  @ApiNotFoundResponse({ description: "Student or wallet not found" })
+  async getWalletByStudentCIN(@Param("cin") cin: string): Promise<Wallet> {
+    return this.walletsService.getWalletByStudentCIN(Number(cin));
   }
 }
