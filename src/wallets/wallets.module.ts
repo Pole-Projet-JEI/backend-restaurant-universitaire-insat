@@ -8,6 +8,7 @@ import { Ticket } from 'src/typeorm/entities/ticket.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([Wallet, Ticket])],
   controllers: [WalletsController],
-  providers: [WalletsService]
+  providers: [WalletsService],
+  exports: [WalletsService],
 })
 export class WalletsModule {}

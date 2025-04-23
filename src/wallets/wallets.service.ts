@@ -15,7 +15,7 @@ export class WalletsService extends GenericCrudService<Wallet> {
   ) {
     super(walletRepository);
   }
-
+  
   async getTickets(walletId: number) {
     const wallet = await this.walletRepository.findOne({
       where: { id: walletId },
