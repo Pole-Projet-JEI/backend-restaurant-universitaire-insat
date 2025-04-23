@@ -8,6 +8,7 @@ import { Wallet } from 'src/typeorm/entities/wallet.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([QrCode])],
   providers: [QrcodeService],
-  controllers: [QrcodeController]
+  controllers: [QrcodeController],
+  exports: [QrcodeService],
 })
 export class QrcodeModule {}

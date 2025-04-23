@@ -1,7 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsInt, IsString, IsOptional } from "class-validator";
 
-export class UpdateQRCodeDto {
+export class QRCodeDto {
   @ApiProperty({
     description: "The ID of the user associated with the QR code",
     example: 123,

@@ -36,7 +36,7 @@ export class Student extends User {
   @JoinColumn()
   wallet: Wallet;
 
-  @OneToOne(() => QrCode)
-  @JoinColumn()
+  @OneToOne(() => QrCode, { cascade: true })
+  @JoinColumn({ name: "QrCodeId", referencedColumnName: "userId" }) 
   qrCode: QrCode;
 }

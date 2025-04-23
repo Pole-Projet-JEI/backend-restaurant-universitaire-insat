@@ -33,4 +33,6 @@ export abstract class User extends TimeStamp {
   @Column({ type: "enum", enum: UserRole, default: UserRole.STUDENT })
   @IsEnum(UserRole)
   role: UserRole;
+
+  
 }

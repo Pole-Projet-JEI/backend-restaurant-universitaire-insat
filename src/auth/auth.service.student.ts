@@ -51,14 +51,14 @@ export class AuthServiceStudent {
 
     // Create QR Code
     const code = uuidv4();
-    const qrCode = this.qrCodeService.create({ userId: dto.nationalId, code });
+    const qrCode = await this.qrCodeService.create({ userId: dto.nationalId, code });
 
     // Create Student
     const student = this.studentRepo.create({
       ...dto,
       passwordHash: hashedPassword,
-      wallet,
       qrCode,
+      wallet
     });
 
     await this.studentRepo.save(student);
