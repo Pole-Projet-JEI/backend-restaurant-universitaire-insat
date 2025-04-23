@@ -7,7 +7,7 @@ import {
 import { InjectRepository } from "@nestjs/typeorm";
 import { Student } from "src/typeorm/entities/Users/Student.entity";
 import { Wallet } from "src/typeorm/entities/wallet.entity";
-import { QrCode } from "src/typeorm/entities/qrCode.entity";
+
 import { CreateStudentDto } from "./dtos/student-signup.dto";
 import { MoreThanOrEqual, Repository } from "typeorm";
 import * as bcrypt from "bcrypt";
@@ -16,7 +16,7 @@ import { JwtService } from "@nestjs/jwt";
 import { RefreshToken } from "src/typeorm/entities/RefreshToken/refreshToken.entity";
 import { v4 as uuidv4 } from "uuid";
 import { ConfigService } from "@nestjs/config";
-import { QrcodeService } from "src/QRCode/qrcode.service";
+
 import { WalletsService } from "src/wallets/wallets.service";
 
 @Injectable()
@@ -27,7 +27,6 @@ export class AuthServiceStudent {
     private refreshTokenRepo: Repository<RefreshToken>,
     private jwtService: JwtService,
     private configService: ConfigService,
-    private readonly qrCodeService: QrcodeService,
     private readonly walletsService: WalletsService
   ) {}
 
@@ -45,19 +44,14 @@ export class AuthServiceStudent {
     }
     const hashedPassword = await bcrypt.hash(dto.password, 10);
 
-    // Create Wallet 
+    // Create Wallet
     const wallet = await this.walletsService.create({ ticketBalance: 0 });
-
-    // Create QR Code
-    const code = uuidv4();
-    const qrCode = await this.qrCodeService.create({ userId: dto.nationalId, code });
 
     // Create Student
     const student = this.studentRepo.create({
       ...dto,
       passwordHash: hashedPassword,
-      qrCode,
-      wallet
+      wallet,
     });
 
     await this.studentRepo.save(student);

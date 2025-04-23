@@ -114,11 +114,13 @@ export class WalletsController {
   @HttpCode(HttpStatus.NO_CONTENT)
   async removeTicketFromWallet(
     @Param("walletId") walletId: string,
-    @Param("ticketId") ticketId: string
+    @Param("ticketId") ticketIds: string //it will be a comma-seperated string (e.g. "1,2,3")
   ): Promise<void> {
+    const ticketIdsArray = ticketIds.split(',').map(id => Number(id));
     return this.walletsService.removeTicketFromWallet(
       Number(walletId),
-      Number(ticketId)
+      ticketIdsArray
     );
   }
+
 }
