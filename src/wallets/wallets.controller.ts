@@ -108,7 +108,7 @@ export class WalletsController {
 
   @Delete(":walletId/tickets/:ticketId")
   @ApiNoContentResponse({
-    description: "Ticket removed from wallet successfully",
+    description: "Tickets removed from wallet successfully",
   })
   @ApiNotFoundResponse({ description: "Wallet or ticket not found" })
   @HttpCode(HttpStatus.NO_CONTENT)
@@ -116,11 +116,27 @@ export class WalletsController {
     @Param("walletId") walletId: string,
     @Param("ticketId") ticketIds: string //it will be a comma-seperated string (e.g. "1,2,3")
   ): Promise<void> {
-    const ticketIdsArray = ticketIds.split(',').map(id => Number(id));
+    const ticketIdsArray = ticketIds.split(",").map((id) => Number(id));
     return this.walletsService.removeTicketFromWallet(
       Number(walletId),
       ticketIdsArray
     );
   }
 
+  @Delete(":walletId/:numberOfTickets")
+  @ApiNoContentResponse({
+    description: "Tickets removed from wallet successfully",
+  })
+  @ApiNotFoundResponse({ description: "Wallet or ticket not found" })
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async removeFirstNTicketsFromWallet(
+    @Param("walletId") walletId: string,
+    @Param("numberOfTickets") numberOfTickets: string
+  ): Promise<void> {
+    const numberOfTicketsToRemove = Number(numberOfTickets);
+    return this.walletsService.removeFirstNTickets(
+      Number(walletId),
+      numberOfTicketsToRemove
+    );
+  }
 }

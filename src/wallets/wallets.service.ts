@@ -75,4 +75,21 @@ export class WalletsService extends GenericCrudService<Wallet> {
     }
     await this.repository.save(wallet);
   }
+
+  async removeFirstNTickets(walletId: number, n: number): Promise<void> {
+    const tickets = await this.ticketRepository.find({
+      where: { wallet: { id: walletId } },
+      relations: ["wallet"],
+      take: n,
+    });
+
+    if (tickets.length === 0) {
+      throw new NotFoundException(
+        `No tickets found for wallet with ID ${walletId}.`
+      );
+    }
+    for (const ticket of tickets) {
+      await this.ticketRepository.delete(ticket.id);
+    }
+  }
 }
