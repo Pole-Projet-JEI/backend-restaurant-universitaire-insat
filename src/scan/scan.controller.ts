@@ -1,13 +1,14 @@
-import { Body, Controller, Post } from "@nestjs/common";
+import { Body, Controller, Post, UsePipes, ValidationPipe } from "@nestjs/common";
 import { ScanService } from "./scan.service";
+import { ScanRetrieveDto } from "./dtos/scan-retrieve.dto";
 
 @Controller("scan")
 export class ScanController {
   constructor(private readonly scanService: ScanService) {}
 
   @Post("retrieve-ticket")
-  async scanToRetrieveTicket(@Body() cin: number) {
-    this.scanService.scanToRetrieveTicket(cin);
-    return { message: `Retrieved one ticket from student with CIN ${cin}` };
+  @UsePipes(new ValidationPipe({ whitelist: true }))
+  async scanToRetrieveTicket(@Body() scanRetrieveDto: ScanRetrieveDto) {
+    return this.scanService.scanToRetrieveTicket(scanRetrieveDto);
   }
 }

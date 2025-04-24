@@ -22,6 +22,4 @@ export class OrderDto {
   @IsInt()
   studentNationalId: number;
 
-
-
 }

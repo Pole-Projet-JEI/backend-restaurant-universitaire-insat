@@ -6,12 +6,13 @@ import { Order } from '../typeorm/entities/order.entity';
 import { Student } from '../typeorm/entities/Users/Student.entity';
 import { Wallet } from '../typeorm/entities/wallet.entity';
 import { Ticket } from 'src/typeorm/entities/ticket.entity';
+import { TicketsModule } from 'src/tickets/tickets.module';
 
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Order, Student,Wallet,Ticket]),
-    OrderModule 
+    TicketsModule
   ],
   controllers: [OrderController],
   providers: [
