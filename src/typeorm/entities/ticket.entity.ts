@@ -11,7 +11,7 @@ export class Ticket extends TimeStamp {
 
   @Column({ unique: true })
   @IsInt()
-  ticketNumber: number;
+  ticketNumber: string;
 
   @ManyToOne(() => Wallet, (wallet) => wallet.tickets)
   wallet: Wallet;

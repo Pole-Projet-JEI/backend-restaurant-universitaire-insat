@@ -3,9 +3,10 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { GenericCrudService } from "src/generic-crud.service";
 import { Ticket } from "src/typeorm/entities/ticket.entity";
-import { Repository, FindOptionsWhere } from "typeorm";
+import { Repository, FindOptionsWhere, EntityManager } from "typeorm";
 import { Wallet } from "src/typeorm/entities/wallet.entity";
 import { TicketDto } from "./dtos/ticketDto";
+import { generateRandomTicketNumber } from "src/utils/generate-ticket-number.helper";
 
 @Injectable()
 export class TicketsService extends GenericCrudService<Ticket> {
@@ -18,12 +19,12 @@ export class TicketsService extends GenericCrudService<Ticket> {
     super(ticketRepository);
   }
 
+  async createTickets(
+    ticketData: TicketDto,
+    transactionalEntityManager?: EntityManager
+  ): Promise<Ticket[]> {
+    const { walletId } = ticketData;
 
-
-
-  async create(ticketData: TicketDto): Promise<Ticket> {
-    const { walletId} = ticketData;
-    
     const wallet = await this.walletRepository.findOne({
       where: { id: walletId } as FindOptionsWhere<Wallet>,
     });
@@ -32,10 +33,17 @@ export class TicketsService extends GenericCrudService<Ticket> {
       throw new NotFoundException(`Wallet with ID ${walletId} not found.`);
     }
 
-    return super.create({
-      ticketNumber,
-      wallet,
-    });
+    const tickets = Array.from(
+      { length: ticketData.numberOfTickets || 1 },
+      () => {
+        const ticketNumber = generateRandomTicketNumber();
+        return transactionalEntityManager.create(Ticket, {
+          ticketNumber,
+          wallet,
+        });
+      }
+    );
+    return transactionalEntityManager.save(tickets);
   }
 
   async update(id: number, ticketData: Partial<TicketDto>): Promise<Ticket> {

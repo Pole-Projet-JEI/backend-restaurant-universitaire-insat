@@ -13,7 +13,13 @@ export class TicketDto {
   })
   @IsInt()
   @IsOptional()
-  ticketNumber?: number;
+  ticketNumber?: string;
+
+  @ApiProperty({
+    description: "Indicates the number of tickets to create (optional) need for ticket creation",
+    example: 5
+  })
+  numberOfTickets?: number;
 
   @ApiProperty({
     description: "ID of the wallet associated with this ticket",
@@ -21,4 +27,6 @@ export class TicketDto {
   })
   @IsInt({ message: "Wallet ID must be an integer." })
   walletId: number;
+
+
 }

@@ -118,18 +118,14 @@ export class OrderService extends GenericCrudService<Order> {
     // Get the next available ticket number
     const lastTicket = await this.ticketRepository.findOne({
       where: {},
-      order: { ticketNumber: 'DESC' },
       select: ['ticketNumber'],
     });
-    const nextTicketNumber = lastTicket ? lastTicket.ticketNumber + 1 : 1;
+    //const nextTicketNumber = lastTicket ? lastTicket.ticketNumber + 1 : 1;
 
     // Create tickets in a transaction
     await this.orderRepository.manager.transaction(async (transactionalEntityManager) => {
-      // Create new tickets with DORMANT status
-      const tickets = Array.from({ length: order.quantity }, (_, i) =>
+      const tickets = Array.from({ length: order.quantity }, () =>
         this.ticketRepository.create({
-          ticketNumber: nextTicketNumber + i,
-          wallet: order.student.wallet,
         })
       );
 

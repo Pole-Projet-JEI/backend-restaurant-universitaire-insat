@@ -7,5 +7,5 @@ export class AddTicketDto {
     example: 1001,
   })
   @IsInt()
-  ticketNumber: number;
+  ticketNumber: string;
 }

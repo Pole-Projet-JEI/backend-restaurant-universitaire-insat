@@ -23,8 +23,8 @@ export class TicketsController {
   @ApiCreatedResponse({ description: 'Ticket created successfully', type: TicketDto })
   @ApiBadRequestResponse({ description: 'Invalid data provided' })
   @HttpCode(HttpStatus.CREATED)
-  async create(@Body() ticketDto: TicketDto): Promise<Ticket> {
-    return this.ticketsService.create(ticketDto);
+  async create(@Body() ticketDto: TicketDto): Promise<Ticket[]> {
+    return this.ticketsService.createTickets(ticketDto);
   }
 
   @Get()
