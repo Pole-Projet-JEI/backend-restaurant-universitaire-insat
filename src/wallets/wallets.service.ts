@@ -71,7 +71,7 @@ export class WalletsService extends GenericCrudService<Wallet> {
     return ticket;
   }
 
-  async removeTicketFromWallet(
+  async removeTicketFromWallet( //think of hajaa generique
     walletId: number,
     ticketId: Array<number>
   ): Promise<void> {

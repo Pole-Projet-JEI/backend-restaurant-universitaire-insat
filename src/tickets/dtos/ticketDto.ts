@@ -1,10 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsInt, IsEnum } from "class-validator";
-
-export enum TicketStatus {
-  USED = "used",
-  DORMANT = "dormant",
-}
+import { IsInt, IsEnum, IsOptional } from "class-validator";
 
 export class TicketDto {
   @ApiProperty({
@@ -17,23 +12,13 @@ export class TicketDto {
     example: 12345,
   })
   @IsInt()
-  ticketNumber: number;
+  @IsOptional()
+  ticketNumber?: number;
 
   @ApiProperty({
-    description: "Status of the ticket",
-    example: TicketStatus.DORMANT,
-    enum: TicketStatus,
-  })
-  @IsEnum(TicketStatus, {
-    message: "Invalid status. Allowed values: used, dormant.",
-  })
-  status: TicketStatus;
-
-
-  @ApiProperty({
-    description: 'ID of the wallet associated with this ticket',
+    description: "ID of the wallet associated with this ticket",
     example: 2,
   })
-  @IsInt({ message: 'Wallet ID must be an integer.' })
+  @IsInt({ message: "Wallet ID must be an integer." })
   walletId: number;
 }

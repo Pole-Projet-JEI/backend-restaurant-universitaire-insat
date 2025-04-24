@@ -129,7 +129,6 @@ export class OrderService extends GenericCrudService<Order> {
       const tickets = Array.from({ length: order.quantity }, (_, i) =>
         this.ticketRepository.create({
           ticketNumber: nextTicketNumber + i,
-          status: 'dormant', // Explicitly set to DORMANT
           wallet: order.student.wallet,
         })
       );

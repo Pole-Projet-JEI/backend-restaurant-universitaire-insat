@@ -18,9 +18,12 @@ export class TicketsService extends GenericCrudService<Ticket> {
     super(ticketRepository);
   }
 
-  async create(ticketData: TicketDto): Promise<Ticket> {
-    const { walletId, ...ticketFields } = ticketData;
 
+
+
+  async create(ticketData: TicketDto): Promise<Ticket> {
+    const { walletId} = ticketData;
+    
     const wallet = await this.walletRepository.findOne({
       where: { id: walletId } as FindOptionsWhere<Wallet>,
     });
@@ -30,7 +33,7 @@ export class TicketsService extends GenericCrudService<Ticket> {
     }
 
     return super.create({
-      ...ticketFields,
+      ticketNumber,
       wallet,
     });
   }
