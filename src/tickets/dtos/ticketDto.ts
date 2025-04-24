@@ -17,7 +17,8 @@ export class TicketDto {
 
   @ApiProperty({
     description: "Indicates the number of tickets to create (optional) need for ticket creation",
-    example: 5
+    example: 5,
+    required: false
   })
   numberOfTickets?: number;
 

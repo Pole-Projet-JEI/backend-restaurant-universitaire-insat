@@ -10,7 +10,8 @@ import { Ticket } from 'src/typeorm/entities/ticket.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Order, Student,Wallet,Ticket]), 
+    TypeOrmModule.forFeature([Order, Student,Wallet,Ticket]),
+    OrderModule 
   ],
   controllers: [OrderController],
   providers: [
