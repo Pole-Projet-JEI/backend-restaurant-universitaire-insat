@@ -13,7 +13,7 @@ export class Ticket extends TimeStamp {
   @PrimaryGeneratedColumn()
   @IsInt()
   id: number;
-
+  
   @Column()
   @IsInt()
   ticketNumber: number;

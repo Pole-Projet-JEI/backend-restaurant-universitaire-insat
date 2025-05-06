@@ -122,7 +122,7 @@ export class OrderService extends GenericCrudService<Order> {
       select: ['ticketNumber'],
     });
     const nextTicketNumber = lastTicket ? lastTicket.ticketNumber + 1 : 1;
-
+    
     // Create tickets in a transaction
     await this.orderRepository.manager.transaction(async (transactionalEntityManager) => {
       // Create new tickets with DORMANT status
